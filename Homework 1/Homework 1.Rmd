@@ -1,0 +1,37 @@
+
+```{r}
+gen_random <- runif(25,160,200)
+gen_random
+
+matriz <- matrix(data=gen_random, ncol = 5)
+matriz
+```
+
+```{r}
+meses <- c("Enero","Febrero", "Marzo", "Abril", "Mayo")
+colnames(matriz) <- meses
+matriz
+```
+
+```{r}
+nombres <- c("ANDREA", "SAUL", "PERCY", "BRANDON", "KIKE", "MARCO", "DANILO", "DIANA", "LIGIA", "VICTOR", "ALICE", "FRANCISCO", "DIEGO", "LUISA", "NICOL", "FERNANDO")
+
+nombres_aleatorios <- sample(nombres, 5)
+
+
+row.names(matriz) <- nombres_aleatorios
+matriz
+```
+```{r}
+Promedio <- rowMeans(matriz)
+matriz <- cbind(matriz,Promedio)
+matriz
+```
+
+```{r}
+Promedio <- colMeans(matriz)
+matriz <- rbind(matriz, Promedio)
+matriz
+```
+
+
