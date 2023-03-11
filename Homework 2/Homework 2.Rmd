@@ -1,0 +1,92 @@
+# Funciones en R
+
+Las funciones en R como en cualquier otro lenguaje de programacion tiene el proposito de envolver cierta cantidad de lineas con la finalidad de realizar un procedimiento o **funcion** y retornar un resultado.
+
+## Estructura de una funcion
+
+Las funciones estan compuestas por tres partes importantes:
+
+-   Argumentos
+-   Cuerpo
+-   Salidas
+
+### Argumentos
+
+Son las valores para ingresar o pasar informacion necesaria para que la funcion se ejecute.Estos pueden tener un valor por defecto, pueden estar vacios.
+
+### Cuerpo
+
+Son las lineas de instrucciones que hacen el procedimiento que describe la funcion
+
+### Salidas
+
+Son los valores que retornara la fucnion al completar el procedimiento
+
+## Ejemplo de una funcion en R
+
+Acontinuacion pondre el ejemplo de una fucnion que retorna la edad dada la fecha que nacio una persona
+
+```{r}
+edad <- function(fecha_nacimiento) {
+  hoy <- Sys.Date()
+  anio_actual <- as.numeric(format(hoy, "%Y"))
+  anio_nacimiento <- as.numeric(format(fecha_nacimiento, "%Y"))
+  
+  edad <- anio_actual - anio_nacimiento 
+  return(edad)
+}
+
+fecha_nacimiento <- as.Date("1996-11-21")
+edad(fecha_nacimiento)
+```
+
+## Argumentos de una funcion
+
+Como ya se menciono antes los argumentos son los valores que se pasan a la funcion para que ejecuten sus procedimientos, estos valores son asignados al nombre del argumento asignado al definir la funcion y los valores que se asignan a cada argumento al ejecutar la funcion.
+
+## Argumentos por valor
+
+A las funciones se le puede pasar los valores de los argumentos por posicion, asignando el valor pasado al ejecutarse la funcion al argumento correspondiente o por **valor** que le asigna el valor al argumento dependiendo del nombre del argumento asignado.
+
+# Familia Apply
+
+La familia Apply aplica una funcion a todos los elementos de una matriz, vector, dataframe o lista.
+
+```{r}
+df <- as.data.frame(matrix(runif(n=25, min=0, max=100), nrow=5))
+df
+
+celsius_kelvin <- function(temperature) {
+  return(temperature + 273.15)
+}
+```
+
+## lapply
+
+La funcion especifica lapply, opera sobre cualquier tipo de objeto antes mencionado pero el resultado que devuelve es una lista
+
+### Ejemplo
+
+```{r}
+lapply(df, celsius_kelvin)
+```
+
+## sapply
+
+La funcion especifica sapply, opera sobre cualquier tipo de objeto antes mencionado pero el resultado que devuelve es un vector
+
+### Ejemplo
+
+```{r}
+sapply(df, celsius_kelvin)
+```
+
+## vapply
+
+La funcion especifica vapply, opera sobre cualquier tipo de objeto antes mencionado. El resultado que devuelve es un vector y tambien tiene un chequeo de tipo de valore retornado por la fucnion que modifica. Si no es el tipo de valor y tamaño esperado la funcion vapply termina con errores.
+
+### Ejemplo
+
+```{r}
+vapply(df, celsius_kelvin, double(5))
+```
