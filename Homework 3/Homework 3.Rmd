@@ -1,0 +1,71 @@
+# Lectura de CSV e importacion de librerias
+
+```{r}
+library(gapminder)
+library(dplyr)
+library(ggplot2)
+
+dataset_results <- read.csv("/cloud/project/primary_results.csv")
+dataset_results
+```
+
+## 1.Filtrar votos del estado de Florida
+
+```{r}
+dataset_1 <- dataset_results %>%
+  filter(state == "Florida")
+
+dataset_1
+```
+
+## 2 Filtrado de votos
+
+### 2.1 FIltrar votos de Hillary Clinton y Donald Trump
+
+```{r}
+dataset_21 <- dataset_results %>%
+  filter(candidate == "Hillary Clinton" | candidate == "Donald Trump")
+dataset_21
+```
+
+### 2.2 Filtrar votos para el partido Democrata y el condado Shelby
+
+```{r}
+dataset_22  <- dataset_results %>%
+  filter( county == "Shelby" & party == "Democrat")
+dataset_22
+```
+
+### 2.3 Filtrar votos para el estado de Alabama y que los votos sean mayores a 15000
+
+```{r}
+dataset_23 <- dataset_results %>%
+  filter(state == "Alabama" & votes > 15000)
+
+dataset_23
+```
+
+## 3. Utilizar funciones select y arrange
+
+### 3.1 Filtrar votos para el estado de Texas y condado Denton. Seleccionando unicamente party, candidate, votes y luego ordenar por votes de forma descendente
+
+```{r}
+dataset_3 <- dataset_results %>%
+  filter(state == "Texas" & county == "Denton") %>%
+  select("party", "candidate", "votes") %>%
+  arrange(desc(votes))
+
+dataset_3
+```
+
+## 4. Utilizar el verbo mutate y arrange
+
+### 4.1 Filtrar y Mutar
+
+```{r}
+dataset4 <- dataset_results %>%
+  filter(party == "Republican" & candidate == "Ted Cruz" & state == "Alaska") %>%
+  mutate(vote_count = votes/fraction_votes) %>%
+  arrange(desc(vote_count))
+dataset4
+```
