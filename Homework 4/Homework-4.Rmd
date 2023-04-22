@@ -63,4 +63,23 @@ grafica
 grafica + labs(title = "Grafica profundidad vs corte") +aes(fill=clarity) + ylab("Profundidad") + xlab("Corte")
 ```
 # 5. Grouping and Summarizing
+## 5.1
+```{r}
+median_dimension_diamond <- diamonds %>% 
+  group_by(cut) %>%
+  summarise(mediaX = median(x), mediaY = median(y) ,mediaZ = median(z))
+median_dimension_diamond
+```
+## 5.2
+```{r}
+cut_premium <- diamonds %>%
+  filter( cut == "Premium") %>%
+  group_by(clarity) %>%
+  summarise(minPrice=min(price), maxPrice=max(price))
+cut_premium
+```
+## 5.3
+```{r}
+ggplot(cut_premium, aes(x=clarity, y=maxPrice, fill=clarity)) + geom_bar( stat = "identity", position = "stack")
+```
 
