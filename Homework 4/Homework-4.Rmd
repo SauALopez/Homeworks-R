@@ -1,0 +1,66 @@
+# 1.Dispersion
+
+```{r}
+diamonds <- read.csv("diamonds.csv")
+str(diamonds)
+```
+## 1.1 Construir grafico
+```{r}
+library(ggplot2)
+grafico <- ggplot(diamonds, aes(x=carat, y=price)) + geom_point()
+grafico
+```
+## 1.2 Estetica y color
+```{r}
+ grafico <- grafico + labs(title="Diamantes") + xlab("Tamaño") + ylab("Precio") + aes(color=clarity)
+```
+## 1.3 Grafico modificado
+```{r}
+grafico
+```
+# 2. Histograma
+## 2.1 Geometria Histograma
+```{r}
+ggplot(diamonds, aes(x=price)) + geom_histogram(bins = 40) 
+```
+## 2.2 Escala logaritmica
+```{r}
+ggplot(diamonds, aes(x=price)) + geom_histogram(bins = 40) + scale_x_log10()
+```
+# 3.Boxplots
+## 3.1 Grafico de cajas
+```{r}
+grafico <- ggplot(diamonds, aes(x=cut, y=price)) + geom_boxplot() + scale_y_log10()
+grafico
+```
+## 3.2 Grafico color plot
+```{r}
+grafico + aes(fill = cut)
+```
+# 4. Faceting
+# 4.1 Filtros
+```{r}
+library(dplyr)
+
+filtered_price <- diamonds %>%
+  filter(price >= 1000) %>%
+  filter( cut %in% c("Ideal", "Good", "Premium"))
+
+filtered_price
+```
+## 4.2 Grafico de filtros
+```{r}
+grafica <- ggplot(filtered_price, aes(x=cut, y=depth)) + geom_bar( stat = "identity", position = "stack")
+grafica
+```
+## 4.3 Faceting a clarity
+```{r}
+grafica <- grafica + facet_wrap(~clarity)
+grafica
+```
+## 4.4 
+```{r}
+grafica + labs(title = "Grafica profundidad vs corte") +aes(fill=clarity) + ylab("Profundidad") + xlab("Corte")
+```
+# 5. Grouping and Summarizing
+
