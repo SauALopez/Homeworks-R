@@ -1,0 +1,80 @@
+# Carga de archivos
+
+```{r}
+library(tidyverse)
+answers <- read.csv("answers.csv")
+question_tags <- read.csv("question_tags.csv")
+question <- read.csv("questions.csv")
+tags <- read.csv("tags.csv")
+```
+
+## 1. Left-joining questions and tags
+
+```{r}
+question %>%
+  left_join(question_tags, by = c("id"="question_id"))
+  
+question %>%
+  left_join(question_tags, by = c("id"="question_id")) %>%
+  left_join(tags, by = c("tag_id"="id")) 
+  
+questions_with_tags <- question %>%
+  left_join(question_tags, by = c("id"="question_id")) %>%
+  left_join(tags, by = c("tag_id"="id")) %>%
+  mutate(tag_name = replace_na(tag_name, "only_r"))
+
+questions_with_tags
+```
+
+## 2. Comparing scores across tags
+
+```{r}
+questions_with_tags%>%
+  group_by(tag_name)%>%
+  summarise(mean_score= mean(score))%>%
+  arrange(desc(mean_score))
+```
+
+## 3. Finding gaps between questions and answers
+
+```{r}
+library(lubridate)
+question %>%
+  inner_join(answers, by = c("id"="question_id"), suffix = c("_question", "_answer"))
+
+question %>%
+  inner_join(answers, by = c("id"="question_id"), suffix = c("_question", "_answer")) %>%
+  mutate(gap = (date(creation_date_answer) - date(creation_date_question)))
+```
+
+## 4. Joining question and answer counts
+
+```{r}
+answers_counts <- answers %>%
+  group_by(question_id) %>%
+  count(question_id)
+answers_counts
+
+question %>%
+  left_join(answers_counts, by=c("id"="question_id"))
+
+question %>%
+  left_join(answers_counts, by=c("id"="question_id")) %>%
+  mutate(n = replace_na(n, 0))
+
+question_answer_counts <- question %>%
+  left_join(answers_counts, by=c("id"="question_id"))%>%
+  mutate(n = replace_na(n, 0))
+question_answer_counts
+```
+
+## 5. Joining questions, answers, and tags
+
+```{r}
+question_tags %>%
+  inner_join(question_answer_counts, by=c("question_id"="id"))
+
+question_tags %>%
+  inner_join(question_answer_counts, by=c("question_id"="id")) %>%
+  inner_join(tags, by=c("tag_id"="id"))
+```
